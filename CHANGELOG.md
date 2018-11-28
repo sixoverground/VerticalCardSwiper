@@ -1,5 +1,11 @@
 # Change Log
 
+## [0.1.0-beta7](https://github.com/sixoverground/VerticalCardSwiper/releases/tag/0.1.0-beta7) (Nov 27, 2018)
+
+#### Enhancements
+
+- Added  `isStackingEnabled` to `VerticalCardSwiper`.
+
 ## [0.1.0-beta6](https://github.com/JoniVR/VerticalCardSwiper/releases/tag/0.1.0-beta6) (Nov 15, 2018)
 
 #### Enhancements

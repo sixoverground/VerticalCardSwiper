@@ -110,6 +110,8 @@ class ExampleViewController: UIViewController, VerticalCardSwiperDatasource {
 @IBInspectable public var visibleNextCardHeight: CGFloat = 50
 /// Vertical spacing between CardCells. Default is 40.
 @IBInspectable public var cardSpacing: CGFloat = 40
+/// Stack the cards. Default is `true`.
+@IBInspectable public var isStackingEnabled: Bool = true
 ```
 
 #### Other

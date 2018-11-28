@@ -33,6 +33,8 @@ internal class VerticalCardSwiperFlowLayout: UICollectionViewFlowLayout {
     internal var cellHeight: CGFloat!
     /// Allows you to make the previous card visible or not visible (stack effect). Default is `true`.
     internal var isPreviousCardVisible: Bool = true
+    /// Disable card stacking
+    internal var isStackingEnabled: Bool = true
     
     internal override func prepare() {
         super.prepare()
@@ -131,22 +133,24 @@ internal class VerticalCardSwiperFlowLayout: UICollectionViewFlowLayout {
         let translationScale = CGFloat((attributes.zIndex + 1) * 10)
         
         // Card stack effect
-        if let itemTransform = firstItemTransform {
-            let scale = 1 - deltaY * itemTransform
-            
-            var t = CGAffineTransform.identity
-            
-            t = t.scaledBy(x: scale, y: 1)
-            if isPreviousCardVisible {
-                t = t.translatedBy(x: 0, y: (deltaY * translationScale))
-            }
+        if isStackingEnabled {
+            if let itemTransform = firstItemTransform {
+                let scale = 1 - deltaY * itemTransform
 
-            attributes.transform = t
+                var t = CGAffineTransform.identity
+
+                t = t.scaledBy(x: scale, y: 1)
+                if isPreviousCardVisible {
+                    t = t.translatedBy(x: 0, y: (deltaY * translationScale))
+                }
+
+                attributes.transform = t
+            }
         }
         
         origin.x = (self.collectionView?.frame.width)! / 2 - attributes.frame.width / 2 - (self.collectionView?.contentInset.left)!
         origin.y = finalY
-        attributes.frame = CGRect(origin: origin, size: attributes.frame.size)
+        if isStackingEnabled { attributes.frame = CGRect(origin: origin, size: attributes.frame.size) }
         attributes.zIndex = attributes.indexPath.row
     }
 }
