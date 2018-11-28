@@ -68,6 +68,9 @@ public class VerticalCardSwiper: UIView {
         willSet {
             flowLayout.minimumLineSpacing = newValue
         }
+        didSet {
+            setCardSwiperInsets()
+        }
     }
     /// The transform animation that is shown on the top card when scrolling through the cards. Default is 0.05.
     @IBInspectable public var firstItemTransform: CGFloat = 0.05 {
@@ -391,8 +394,8 @@ extension VerticalCardSwiper: UICollectionViewDelegate, UICollectionViewDataSour
     }
     
     fileprivate func setCardSwiperInsets(){
-        
-        verticalCardSwiperView.contentInset = UIEdgeInsets(top: topInset, left: sideInset, bottom: topInset + flowLayout.minimumLineSpacing + visibleNextCardHeight, right: sideInset)
+        let bottomInset = visibleNextCardHeight + flowLayout.minimumLineSpacing
+        verticalCardSwiperView.contentInset = UIEdgeInsets(top: topInset, left: sideInset, bottom: bottomInset, right: sideInset)
     }
 }
 
