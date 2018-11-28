@@ -81,6 +81,12 @@ public class VerticalCardSwiper: UIView {
             flowLayout.isPreviousCardVisible = newValue
         }
     }
+    /// Stack the cards. Default is `true`.
+    @IBInspectable public var isStackingEnabled: Bool = true {
+        willSet {
+            flowLayout.isStackingEnabled = newValue
+        }
+    }
     
     public weak var delegate: VerticalCardSwiperDelegate?
     public weak var datasource: VerticalCardSwiperDatasource? {
@@ -112,6 +118,7 @@ public class VerticalCardSwiper: UIView {
         flowLayout.firstItemTransform = firstItemTransform
         flowLayout.minimumLineSpacing = cardSpacing
         flowLayout.isPagingEnabled = true
+        flowLayout.isStackingEnabled = true
         return flowLayout
     }()
     
