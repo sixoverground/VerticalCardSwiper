@@ -132,6 +132,13 @@ internal class VerticalCardSwiperFlowLayout: UICollectionViewFlowLayout {
         let deltaY = (finalY - origin.y) / attributes.frame.height
         let translationScale = CGFloat((attributes.zIndex + 1) * 10)
         
+        if !isStackingEnabled {
+            let alphaAdjust = 1.0 - min(deltaY, 1.0)
+            attributes.alpha = alphaAdjust
+        } else {
+            attributes.alpha = 1
+        }
+        
         // Card stack effect
         if isStackingEnabled {
             if let itemTransform = firstItemTransform {
