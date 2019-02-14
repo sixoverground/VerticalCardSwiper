@@ -265,7 +265,7 @@ extension VerticalCardSwiper: UIGestureRecognizerDelegate {
         /// The translation of the finger performing the PanGesture.
         let translation = sender.translation(in: self)
         
-        if swipeAbleArea.contains(location) && !verticalCardSwiperView.isScrolling {
+        if swipeAbleArea != nil && swipeAbleArea.contains(location) && !verticalCardSwiperView.isScrolling {
             if let swipedCardIndex = verticalCardSwiperView.indexPathForItem(at: locationInCollectionView) {
                 /// The card that is swipeable inside the SwipeAbleArea.
                 swipedCard = verticalCardSwiperView.cellForItem(at: swipedCardIndex) as? CardCell
