@@ -28,37 +28,12 @@ import UIKit
  This allows for custom implementations of the underlying `UICollectionView` so that we can simplify some usages.
  */
 public class VerticalCardSwiperView: UICollectionView {
-    
+
     /// A `Bool` that indicates if the `UICollectionView` is currently scrolling.
     public var isScrolling: Bool {
         return (self.isDragging || self.isTracking || self.isDecelerating)
     }
-    
-    /**
-     Returns an array of indexes (as Int) that are currently visible in the `VerticalCardSwiperView`.
-     This does not include cards that are behind the card that is in focus.
-     - returns: An array of indexes (as Int) that are currently visible.
-     */
-    public var indexesForVisibleCards: [Int] {
-        
-        let lowestIndex = self.indexPathsForVisibleItems.min()?.row ?? 0
-        
-        // when first card is focussed, return as usual.
-        if (visibleCells.count == 2 && lowestIndex == 0) {
-            return self.indexPathsForVisibleItems.map({$0.row}).sorted()
-        }
-        
-        var indexes: [Int] = []
-        // Add each visible cell except the lowest one and return
-        
-        for cellIndexPath in self.indexPathsForVisibleItems {
-            if (cellIndexPath.row != lowestIndex) {
-                indexes.append(cellIndexPath.row)
-            }
-        }
-        return indexes.sorted()
-    }
-    
+
     /**
      Returns a reusable cell object located by its identifier.
      Call this method from your data source object when asked to provide a new cell for the VerticalCardSwiperView.

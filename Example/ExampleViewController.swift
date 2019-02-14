@@ -24,9 +24,9 @@ import UIKit
 import VerticalCardSwiper
 
 class ExampleViewController: UIViewController, VerticalCardSwiperDelegate, VerticalCardSwiperDatasource {
-    
-    @IBOutlet weak var cardSwiper: VerticalCardSwiper!
-    
+
+    @IBOutlet private var cardSwiper: VerticalCardSwiper!
+
     private var contactsDemoData: [Contact] = [
         Contact(name: "John Doe", age: 33),
         Contact(name: "Chuck Norris", age: 78),
@@ -42,42 +42,82 @@ class ExampleViewController: UIViewController, VerticalCardSwiperDelegate, Verti
         Contact(name: "Tim Cook", age: 57),
         Contact(name: "Satya Nadella", age: 50)
     ]
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         cardSwiper.delegate = self
         cardSwiper.datasource = self
-        
+
         // register cardcell for storyboard use
         cardSwiper.register(nib: UINib(nibName: "ExampleCell", bundle: nil), forCellWithReuseIdentifier: "ExampleCell")
     }
-    
-    func cardForItemAt(verticalCardSwiperView: VerticalCardSwiperView, cardForItemAt index: Int) -> CardCell {
-        
-        let cardCell = verticalCardSwiperView.dequeueReusableCell(withReuseIdentifier: "ExampleCell", for: index) as! ExampleCardCell
-        
-        let contact = contactsDemoData[index]
-        
-        cardCell.setRandomBackgroundColor()
-        
-        cardCell.nameLbl.text = "Name: " + contact.name
-        cardCell.ageLbl.text = "Age: \(contact.age ?? 0)"
-    
-        return cardCell
+
+    @IBAction func pressRemoveCards(_ sender: UIBarButtonItem) {
+        // remove the first 5 (or less) cards
+        var indexesToRemove: [Int] = []
+        for i in (0...4).reversed() where i < contactsDemoData.count {
+            contactsDemoData.remove(at: i)
+            indexesToRemove.append(i)
+        }
+
+        cardSwiper.deleteCards(at: indexesToRemove)
     }
-    
+
+    @IBAction func pressAddCards(_ sender: UIBarButtonItem) {
+        let c1 = Contact(name: "testUser1", age: 12)
+        let c2 = Contact(name: "testUser2", age: 12)
+        let c3 = Contact(name: "testUser3", age: 12)
+        let c4 = Contact(name: "testUser4", age: 12)
+        let c5 = Contact(name: "testUser5", age: 12)
+        contactsDemoData.insert(c1, at: 0)
+        contactsDemoData.insert(c2, at: 1)
+        contactsDemoData.insert(c3, at: 2)
+        contactsDemoData.insert(c4, at: 3)
+        contactsDemoData.insert(c5, at: 4)
+
+        cardSwiper.insertCards(at: [0, 1, 2, 3, 4])
+    }
+
+    @IBAction func pressScrollUp(_ sender: UIBarButtonItem) {
+        if let currentIndex = cardSwiper.focussedIndex {
+            cardSwiper.scrollToCard(at: currentIndex - 1, animated: true)
+        }
+    }
+
+    @IBAction func pressScrollDown(_ sender: UIBarButtonItem) {
+        if let currentIndex = cardSwiper.focussedIndex {
+            cardSwiper.scrollToCard(at: currentIndex + 1, animated: true)
+        }
+    }
+
+    func cardForItemAt(verticalCardSwiperView: VerticalCardSwiperView, cardForItemAt index: Int) -> CardCell {
+
+        if let cardCell = verticalCardSwiperView.dequeueReusableCell(withReuseIdentifier: "ExampleCell", for: index) as? ExampleCardCell {
+
+            let contact = contactsDemoData[index]
+
+            cardCell.setRandomBackgroundColor()
+
+            cardCell.nameLbl.text = "Name: " + contact.name
+            cardCell.ageLbl.text = "Age: \(contact.age ?? 0)"
+
+            return cardCell
+        }
+        return CardCell()
+    }
+
     func numberOfCards(verticalCardSwiperView: VerticalCardSwiperView) -> Int {
         return contactsDemoData.count
     }
-    
-    func willSwipeCardAway(card: CardCell, index: Int, swipeDirection: SwipeDirection) {
 
+    func willSwipeCardAway(card: CardCell, index: Int, swipeDirection: SwipeDirection) {
         // called right before the card animates off the screen.
+        contactsDemoData.remove(at: index)
     }
 
     func didSwipeCardAway(card: CardCell, index: Int, swipeDirection: SwipeDirection) {
 
-        contactsDemoData.remove(at: index)
+        // called when a card has animated off screen entirely.
     }
 }

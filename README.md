@@ -28,7 +28,7 @@
 <br />
   
 <div align="center">
-  <img src="https://github.com/JoniVR/VerticalCardSwiper/blob/development/example.gif" alt="example"/>
+  <img src="./example.gif" alt="example"/>
 </div>
 
 ## Project goal and information
@@ -46,7 +46,7 @@ VerticalCardSwiper is available through [CocoaPods](https://cocoapods.org). To i
 it, simply add the following line to your Podfile:
 
 ```ruby
-pod 'VerticalCardSwiper', '0.1.0-beta6'
+pod 'VerticalCardSwiper', '0.1.0-beta7'
 ```
 
 ## Example
@@ -112,12 +112,35 @@ class ExampleViewController: UIViewController, VerticalCardSwiperDatasource {
 @IBInspectable public var cardSpacing: CGFloat = 40
 /// Stack the cards. Default is `true`.
 @IBInspectable public var isStackingEnabled: Bool = true
+/** 
+ Returns an array of indexes (as Int) that are currently visible in the `VerticalCardSwiperView`.
+ This does not include cards that are behind the card that is in focus.
+*/
+public var indexesForVisibleCards: [Int]
 ```
 
 #### Other
-Just like with a regular `UICollectionView`, you can reload the data by calling:
+##### Just like with a regular `UICollectionView`, you can reload the data by calling
 ```swift
 cardSwiper.reloadData()
+```
+
+##### Get the current focussed card index
+```swift
+cardSwiper.focussedIndex
+```
+
+##### Scroll to a specifc card by calling
+```swift
+cardSwiper.scrollToCard(at: Int, animated: Bool)
+```
+
+##### Moving/Deleting/Inserting cards at runtime
+Make sure to update your datasource first, otherwise an error will occur.
+```swift
+cardSwiper.moveCard(at: Int, to: Int)
+cardSwiper.deleteCards(at: [Int])
+cardSwiper.insertCards(at: [Int])
 ```
 
 ### Delegation
@@ -153,6 +176,11 @@ class ViewController: UIViewController, VerticalCardSwiperDelegate {
         // Tells the delegate when the user scrolls through the cards (optional).
     }
     
+    func didEndScroll(verticalCardSwiperView: VerticalCardSwiperView) {
+    
+        // Tells the delegate when scrolling through the cards came to an end (optional).
+    }
+    
     func didDragCard(card: CardCell, index: Int, swipeDirection: SwipeDirection) {
     
         // Called when the user starts dragging a card to the side (optional).
@@ -160,12 +188,12 @@ class ViewController: UIViewController, VerticalCardSwiperDelegate {
     
     func didTapCard(verticalCardSwiperView: VerticalCardSwiperView, index: Int) {
     
-        // Tells the delegate when the user taps a card.
+        // Tells the delegate when the user taps a card (optional).
     }
     
     func didHoldCard(verticalCardSwiperView: VerticalCardSwiperView, index: Int, state: UIGestureRecognizer.State) {
     
-        // Tells the delegate when the user holds a card.
+        // Tells the delegate when the user holds a card (optional).
     }
 }
 ```
