@@ -90,6 +90,13 @@ public class VerticalCardSwiper: UIView {
             flowLayout.isStackingEnabled = newValue
         }
     }
+    
+    public weak var delegate: VerticalCardSwiperDelegate?
+    public weak var datasource: VerticalCardSwiperDatasource? {
+        didSet{
+            numberOfCards = datasource?.numberOfCards(verticalCardSwiperView: self.verticalCardSwiperView) ?? 0
+        }
+    }
 
     /**
      Returns an array of indexes (as Int) that are currently visible in the `VerticalCardSwiperView`.
