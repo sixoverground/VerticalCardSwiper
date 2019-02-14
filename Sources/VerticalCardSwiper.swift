@@ -90,13 +90,6 @@ public class VerticalCardSwiper: UIView {
             flowLayout.isStackingEnabled = newValue
         }
     }
-    
-    public weak var delegate: VerticalCardSwiperDelegate?
-    public weak var datasource: VerticalCardSwiperDatasource? {
-        didSet{
-            numberOfCards = datasource?.numberOfCards(verticalCardSwiperView: self.verticalCardSwiperView) ?? 0
-        }
-    }
 
     /**
      Returns an array of indexes (as Int) that are currently visible in the `VerticalCardSwiperView`.
@@ -130,8 +123,14 @@ public class VerticalCardSwiper: UIView {
     }
 
     public weak var delegate: VerticalCardSwiperDelegate?
-    public weak var datasource: VerticalCardSwiperDatasource?
+    public weak var datasource: VerticalCardSwiperDatasource? {
+        didSet{
+            numberOfCards = datasource?.numberOfCards(verticalCardSwiperView: self.verticalCardSwiperView) ?? 0
+        }
+    }
 
+    /// The amount of cards in the collectionView.
+    fileprivate var numberOfCards: Int = 0
     /// We use this tapGestureRecognizer for the tap recognizer.
     fileprivate var tapGestureRecognizer: UITapGestureRecognizer!
     /// We use this tapGestureRecognizer for the tap recognizer.
